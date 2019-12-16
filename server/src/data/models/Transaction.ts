@@ -1,6 +1,7 @@
 import { Sequelize, Model, DataTypes } from 'sequelize';
 
 import { entityId, createdAt, updatedAt, deletedAt } from '../common/datatypes';
+import { ModelTypeMap } from '../common/modelType';
 
 class Transaction extends Model {
   public id!: number;
@@ -19,6 +20,9 @@ class Transaction extends Model {
           type: new DataTypes.DATE(),
           defaultValue: DataTypes.NOW,
           allowNull: false,
+          validate: {
+            isDate: true,
+          },
         },
         createdAt,
         updatedAt,
@@ -30,6 +34,10 @@ class Transaction extends Model {
         tableName: 'transactions',
       }
     );
+  };
+
+  static associate = (models: ModelTypeMap): void => {
+    Transaction.belongsTo(models.User);
   };
 }
 

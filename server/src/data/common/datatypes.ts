@@ -6,12 +6,18 @@ export const entityId: ModelAttributeColumnOptions = {
   defaultValue: DataTypes.UUIDV4,
   unique: true,
   allowNull: false,
+  validate: {
+    isUUID: 4,
+  },
 };
 
 const dateType: ModelAttributeColumnOptions = {
   type: new DataTypes.DATE(),
   defaultValue: DataTypes.NOW,
   allowNull: false,
+  validate: {
+    isDate: true,
+  },
 };
 
 export const createdAt: ModelAttributeColumnOptions = {
@@ -27,4 +33,7 @@ export const updatedAt: ModelAttributeColumnOptions = {
 export const deletedAt: ModelAttributeColumnOptions = {
   type: DataTypes.DATE,
   field: 'deleted_at',
+  validate: {
+    isDate: true,
+  },
 };

@@ -9,6 +9,7 @@ class User extends Model {
   public firstName!: string;
   public lastName!: string | null;
   public preferredName!: string | null;
+  public email!: string;
 
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
@@ -17,17 +18,29 @@ class User extends Model {
     User.init(
       {
         entityId,
-        firstName: {
+        email: {
           type: new DataTypes.STRING(),
           allowNull: false,
+          unique: true,
+          comment: 'email of user',
+          validate: {
+            isEmail: true,
+          },
         },
-        lastName: {
+        first_name: {
+          type: new DataTypes.STRING(),
+          allowNull: false,
+          comment: 'first name of user',
+        },
+        last_name: {
           type: new DataTypes.STRING(),
           allowNull: true,
+          comment: 'last name of user',
         },
-        preferredName: {
+        preferred_name: {
           type: new DataTypes.STRING(),
           allowNull: true,
+          comment: 'preferred name of user',
         },
         createdAt,
         updatedAt,
@@ -43,6 +56,14 @@ class User extends Model {
   static associate = (models: ModelTypeMap): void => {
     User.hasMany(models.Transaction);
   };
+
+  get name() {
+    return this.preferredName || this.firstName;
+  }
+
+  get fullName() {
+    return `${this.firstName}${this.lastName ? ` ${this.lastName}` : ''}`;
+  }
 }
 
 export default User;
